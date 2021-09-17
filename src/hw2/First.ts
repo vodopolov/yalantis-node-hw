@@ -1,10 +1,10 @@
 
 type Item = { item: string, index: number }
 
-export async function runSequentially<T>(
+export async function runSequentially<T, R>(
     arrayParam: T[],
-    callback: (item: T, index: number) => Promise<Item>
-) {
+    callback: (item: T, index: number) => Promise<R>
+): Promise<R[]> {
     const result: R[] = []
     for (let i = 0; i < arrayParam.length; i++) {
         result.push(await callback(arrayParam[i], i))
