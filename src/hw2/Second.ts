@@ -5,11 +5,10 @@ function arrayMutateRemove<T>(array: Array<T>, predicate: (item: T) => boolean):
         if (predicate(item)) {
             return true
         }
-        else {
-            removedElements.push(item)
-            removedElementsIds.push(index)
-            return false
-        }
+        
+        removedElements.push(item)
+        removedElementsIds.push(index)
+        return false
     })
     removeItemsByIds(array, removedElementsIds)
     return removedElements
