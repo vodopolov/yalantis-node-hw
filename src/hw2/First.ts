@@ -5,7 +5,7 @@ export async function runSequentially<T>(
     arrayParam: T[],
     callback: (item: T, index: number) => Promise<Item>
 ) {
-    const result: Item[] = []
+    const result: R[] = []
     for (let i = 0; i < arrayParam.length; i++) {
         result.push(await callback(arrayParam[i], i))
     }
