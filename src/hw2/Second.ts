@@ -1,11 +1,11 @@
 function arrayMutateRemove<T>(array: Array<T>, predicate: (item: T) => boolean): Array<T> {
-    const removedElements: T[] = [],
-        removedElementsIds: number[] = []
+    const removedElements: T[] = []
+    const removedElementsIds: number[] = []
     array.filter((item, index) => {
         if (predicate(item)) {
             return true
         }
-        
+
         removedElements.push(item)
         removedElementsIds.push(index)
         return false

@@ -1,6 +1,3 @@
-
-type Item = { item: string, index: number }
-
 export async function runSequentially<T, R>(
     arrayParam: T[],
     callback: (item: T, index: number) => Promise<R>
@@ -13,14 +10,14 @@ export async function runSequentially<T, R>(
 }
 
 async function main() {
-    const arrayForTest: Array<string> = ["one", "two", "three"]
+    const arrayForTest: Array<string> = ['one', 'two', 'three']
 
     const results = await runSequentially(arrayForTest, (item, index) => {
         return new Promise((resolve) => {
             setTimeout(resolve, 1000,
                 {
                     item,
-                    index,
+                    index
                 })
         })
     })
