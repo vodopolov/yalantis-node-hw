@@ -78,7 +78,7 @@ function createFolder(jsonFilename: string): string {
 }
 
 function writeContentToFile(content: string, pathToFile: string) {
-    fs.writeFile(pathToFile, content, function (err) {
+    fs.writeFile(pathToFile, content, (err) => {
         if (err) {
             return console.log(err)
         }
