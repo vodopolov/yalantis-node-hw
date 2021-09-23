@@ -19,7 +19,9 @@ export default function parse() {
 }
 
 function getAndCheckPathFromArgs(argsArray: string[]): string {
-    if (!argsArray) throw new Error('Args cannot be null')
+    if (!argsArray) {
+        throw new Error('Args cannot be null')
+    }
     const jsonPath: string = argsArray[0]
     if (argsArray.length !== 1) throw new Error(`Not valid arguments. More than one param. Args: ${JSON.stringify(argsArray)}`)
     if (!fs.existsSync(jsonPath)) throw new Error(`No such file: ${jsonPath}`)
