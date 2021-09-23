@@ -11,6 +11,7 @@ export default class FakeMailService implements IMailService {
             auth: {
                 user: 'lavon.marvin10@ethereal.email',
                 pass: 'QDRhQhMJJSdT6c9jFh'
+                // This data can be used to check how messages are sent at https://ethereal.email/messages
             }
         })
     }
