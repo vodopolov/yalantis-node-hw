@@ -1,8 +1,9 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from 'class-validator'
 
 export default class UserReplaceDto {
     @IsNotEmpty()
     name: string
+
     @IsNotEmpty()
     id: number
 

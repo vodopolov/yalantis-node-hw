@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common"
-import UserCreateDto from "../model/UserCreateDto"
-import UserProfile from "../model/UserProfile"
-import { IUserProfileRepository } from "../repository/IUserRepository"
-import { UserProfileFileRepository } from "../repository/UserProfileFileRepository"
+import { Injectable } from '@nestjs/common'
+import UserCreateDto from '../model/UserCreateDto'
+import UserProfile from '../model/UserProfile'
+import { IUserProfileRepository } from '../repository/IUserRepository'
+import { UserProfileFileRepository } from '../repository/UserProfileFileRepository'
 
 @Injectable()
 export default class UserService {

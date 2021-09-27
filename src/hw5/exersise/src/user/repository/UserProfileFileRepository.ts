@@ -1,12 +1,12 @@
 import * as jwt from 'jsonwebtoken'
-import UserProfile from "../model/UserProfile"
-import { UserSavedResponse } from "../model/UserSavedResponse"
-import { IUserProfileRepository } from "./IUserRepository"
+import UserProfile from '../model/UserProfile'
+import { UserSavedResponse } from '../model/UserSavedResponse'
+import { IUserProfileRepository } from './IUserRepository'
 
 const fs = require('fs')
 
 export class UserProfileFileRepository implements IUserProfileRepository {
-    private readonly path = require("path");
+    private readonly path = require('path');
     private readonly filename: string = 'users.json';
     private readonly folder: string = 'storage';
     private readonly fullFilePath = this.path.join(this.folder, this.filename)

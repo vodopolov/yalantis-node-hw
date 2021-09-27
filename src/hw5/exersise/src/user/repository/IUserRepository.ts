@@ -1,5 +1,5 @@
-import UserProfile from "../model/UserProfile"
-import { UserSavedResponse } from "../model/UserSavedResponse"
+import UserProfile from '../model/UserProfile'
+import { UserSavedResponse } from '../model/UserSavedResponse'
 
 export interface IUserProfileRepository {
     getOne(id: number): Promise<UserProfile>

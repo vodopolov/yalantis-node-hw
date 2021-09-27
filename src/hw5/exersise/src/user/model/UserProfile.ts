@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from 'class-validator'
 
 export default class UserProfile {
     private _id: number = -1

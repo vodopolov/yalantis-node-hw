@@ -1,15 +1,22 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from "@nestjs/common"
+import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common'
 import { Response } from 'express'
-import { RightsGuard } from "../../auth/RightsGuard"
-import UserCreateDto from "../model/UserCreateDto"
-import UserProfile from "../model/UserProfile"
-import UserReplaceDto from "../model/UserReplaceDto"
-import UserService from "../service/user.service"
+import { RightsGuard } from '../../auth/RightsGuard'
+import UserCreateDto from '../model/UserCreateDto'
+import UserProfile from '../model/UserProfile'
+import UserReplaceDto from '../model/UserReplaceDto'
+import UserService from '../service/user.service'
+
+interface IdParamHolder {
+    id: string
+}
 
 @Controller('users')
 export class UserController {
+    private readonly _userService: UserService
 
-    constructor(private readonly _userService: UserService) { }
+    constructor(userService: UserService) {
+        this._userService = userService
+    }
 
     @Post('/create/')
     create(@Body() user: UserCreateDto) {
@@ -41,8 +48,4 @@ export class UserController {
         const result = await this._userService.update(realUser)
         return res.status(HttpStatus.OK).json({ result: result ? `User ${user.id} was saved` : `User ${user.id} wasn't saved` })
     }
-}
-
-interface IdParamHolder {
-    id: string
 }
