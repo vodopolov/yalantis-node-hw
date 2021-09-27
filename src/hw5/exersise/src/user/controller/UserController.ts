@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from "@nestjs/common"
 import { Response } from 'express'
-import { RightsGuard } from "../../auth/simple.guard"
+import { RightsGuard } from "../../auth/RightsGuard"
 import UserCreateDto from "../model/UserCreateDto"
 import UserProfile from "../model/UserProfile"
 import UserService from "../service/user.service"
