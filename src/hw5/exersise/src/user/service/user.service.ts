@@ -21,7 +21,7 @@ export default class UserService {
         return this._userRepository.getOne(id)
     }
 
-    public update(id: number, user: UserProfile) {
-
+    public update(user: UserProfile) {
+        return this._userRepository.update(user)
     }
 }

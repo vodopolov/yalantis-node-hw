@@ -44,10 +44,6 @@ export class UserProfileFileRepository implements IUserProfileRepository {
         })
     }
 
-    update(user: UserProfile): Promise<boolean> {
-        return Promise.reject(new Error('Not implemented yet'))
-    }
-
     save(user: UserProfile): Promise<UserSavedResponse> {
         this.checkAndCreateFolder()
         return new Promise((resolve, reject) => {
@@ -64,6 +60,22 @@ export class UserProfileFileRepository implements IUserProfileRepository {
                 return reject(reason)
             })
         })
+    }
+
+    async update(newUser: UserProfile): Promise<boolean> {
+        try {
+            const userToReplace = await this.getOne(newUser.getId())
+            await this.delete(userToReplace.getId())
+            return this.getAll().then((users: UserProfile[]) => {
+                users.push(newUser)
+                this.saveUserData(users)
+                return true
+            }).catch(reason => {
+                return false
+            })
+        } catch (e) {
+            return Promise.resolve(false)
+        }
     }
 
     getAll(): Promise<UserProfile[]> {

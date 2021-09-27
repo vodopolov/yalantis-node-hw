@@ -13,16 +13,16 @@ export class RightsGuard implements CanActivate {
         const token = this.getToken(message)
         return new Promise<boolean>(resolve => {
             jwt.verify(token, '123', (err, decoded) => {
-                return resolve(decoded.userId === requestedUserId)
+                return resolve(!!decoded && (decoded.id === requestedUserId))
             })
         })
     }
 
     private getRequestedUserId(message: IncomingMessage): number {
-        if (!message["params"]) {
+        if (!message["body"]) {
             return -1
         }
-        return Number.parseInt(message["params"].id)
+        return Number.parseInt(message["body"].id)
     }
 
     private getToken(message: IncomingMessage): string {
