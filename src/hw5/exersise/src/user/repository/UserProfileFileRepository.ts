@@ -1,4 +1,4 @@
-import path from "path"
+import * as jwt from 'jsonwebtoken'
 import UserProfile from "../model/UserProfile"
 import { UserSavedResponse } from "../model/UserSavedResponse"
 import { IUserProfileRepository } from "./IUserRepository"
@@ -6,9 +6,10 @@ import { IUserProfileRepository } from "./IUserRepository"
 const fs = require('fs')
 
 export class UserProfileFileRepository implements IUserProfileRepository {
+    private readonly path = require("path");
     private readonly filename: string = 'users.json';
     private readonly folder: string = 'storage';
-    private readonly fullFilePath = path.join(this.folder, this.filename)
+    private readonly fullFilePath = this.path.join(this.folder, this.filename)
 
     private maxId: number = -1;
 
@@ -19,7 +20,7 @@ export class UserProfileFileRepository implements IUserProfileRepository {
             for (const item of jsonData) {
                 const numId = Number.parseInt(item._id)
                 if (numId === id) {
-                    const parsedItem = new UserProfile(item.firstName)
+                    const parsedItem = new UserProfile(item.name)
                     parsedItem.setId(numId)
                     return resolve(parsedItem)
                 }
@@ -57,7 +58,8 @@ export class UserProfileFileRepository implements IUserProfileRepository {
                 user.setId(++this.maxId)
                 users.push(user)
                 this.saveUserData(users)
-                return resolve(new UserSavedResponse(this.maxId))
+                const token = jwt.sign({ id: user.getId() }, '123')
+                return resolve(new UserSavedResponse(this.maxId, token))
             }).catch((reason) => {
                 return reject(reason)
             })
@@ -70,7 +72,7 @@ export class UserProfileFileRepository implements IUserProfileRepository {
             const jsonData = JSON.parse(fs.readFileSync(this.fullFilePath))
             const result: UserProfile[] = []
             for (const item of jsonData) {
-                const parsedItem = new UserProfile(item.firstName)
+                const parsedItem = new UserProfile(item.name)
                 parsedItem.setId(Number.parseInt(item._id))
                 result.push(parsedItem)
             }

@@ -1,35 +1,38 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from "@nestjs/common"
+import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from "@nestjs/common"
 import { Response } from 'express'
+import { RightsGuard } from "../../auth/simple.guard"
 import UserCreateDto from "../model/UserCreateDto"
 import UserProfile from "../model/UserProfile"
-import { IUserProfileRepository } from "../repository/IUserRepository"
-import { UserProfileFileRepository } from "../repository/UserProfileFileRepository"
+import UserService from "../service/user.service"
 
 @Controller('users')
 export class UserController {
-    private _userRepository: IUserProfileRepository = new UserProfileFileRepository()
+
+    constructor(private readonly _userService: UserService) { }
 
     @Post()
     create(@Body() user: UserCreateDto) {
         const realUser = new UserProfile(user.name)
-        return this._userRepository.save(realUser)
+        return this._userService.save(realUser)
     }
 
     @Get()
     getAll() {
-        return this._userRepository.getAll()
+        return this._userService.getAll()
     }
 
     @Get(':id')
-    getById(@Param() params: IdParamHolder, @Res() res: Response) {
-        const id = params.id
-        return this._userRepository.getOne(id)
+    @UseGuards(new RightsGuard())
+    async getById(@Param() params: IdParamHolder, @Res() res: Response) {
+        const id = Number.parseInt(params.id)
+        const result = await this._userService.get(id)
             .catch((e: Error) => {
                 return res.status(HttpStatus.OK).json(e.message)
             })
+        return res.status(HttpStatus.OK).json(result)
     }
 }
 
 interface IdParamHolder {
-    id: number
+    id: string
 }
