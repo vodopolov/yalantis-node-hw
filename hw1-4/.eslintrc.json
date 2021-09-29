@@ -27,6 +27,5 @@
                 "asyncArrow": "always"
             }
         ]
-    },
-    "root": true
+    }
 }

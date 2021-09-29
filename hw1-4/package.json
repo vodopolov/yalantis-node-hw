@@ -22,6 +22,7 @@
   "homepage": "https://github.com/vodopolov/yalantis-node-hw#readme",
   "devDependencies": {
     "@types/node": "^16.9.1",
+    "@types/nodemailer": "^6.4.4",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
@@ -34,6 +35,8 @@
   "dependencies": {
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "@sendgrid/mail": "^7.4.7",
+    "nodemailer": "^6.6.3",
     "systeminformation": "^5.9.3"
   }
 }
