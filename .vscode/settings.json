@@ -1,0 +1,7 @@
+{
+    "javascript.format.semicolons": "remove",
+    "eslint.workingDirectories": [
+        "hw1-4/src",
+        "src/hw5/exersise"
+    ]
+}
