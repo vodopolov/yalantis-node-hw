@@ -2,3 +2,5 @@ node_modules
 build
 .vscode
 .eslintcache
+storage/users.json
+src/hw5/exersise/storage/users.json
