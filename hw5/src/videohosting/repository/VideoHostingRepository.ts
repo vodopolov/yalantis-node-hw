@@ -28,6 +28,18 @@ export default class VideoHostingRepository {
             `FROM channels WHERE id = '${channelId}'`)
     }
 
+    public async getMostPopularVideos() {
+        const runner = await this.getQueryRunner()
+        return runner.query('SELECT likes.video_id, videos.channel_id, videos.title, videos.description, videos.preview_url, videos.file_url, videos.duration, videos.published_at ' +
+            'FROM likes ' +
+            'RIGHT JOIN videos ' +
+            'ON likes.video_id = videos.id ' +
+            'WHERE videos.published_at >= \'20210901\' ' +
+            'GROUP BY likes.video_id, videos.channel_id, videos.title, videos.description, videos.preview_url, videos.file_url, videos.duration, videos.published_at ' +
+            'HAVING COUNT(CASE WHEN likes.positive = \'true\' THEN 1 ELSE null END) >= 4 ' +
+            'ORDER BY COUNT(CASE WHEN likes.positive = \'true\' THEN 1 ELSE null END) DESC LIMIT 10')
+    }
+
     private async getConnection() {
         if (!this._connection) {
             this._connection = await getConnection()
