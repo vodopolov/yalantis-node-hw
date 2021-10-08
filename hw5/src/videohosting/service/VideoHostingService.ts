@@ -14,7 +14,7 @@ export default class VideoHostingService {
     }
 
     public getMostPopularVideos() {
-        return this._repository.getMostLikedVideos()
+        return this._repository.getMostPopularVideos()
     }
 
     public getVideosFromUserSubscriptions(name: string) {
@@ -23,5 +23,9 @@ export default class VideoHostingService {
 
     public getChannelInfo(channelId: string) {
         return this._repository.getChannelInfo(channelId)
+    }
+
+    public getUserSubscriptions(userName: string) {
+        return this._repository.getUserSubscriptions(userName)
     }
 }

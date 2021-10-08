@@ -40,6 +40,20 @@ export default class VideoHostingRepository {
             'ORDER BY COUNT(CASE WHEN likes.positive = \'true\' THEN 1 ELSE null END) DESC LIMIT 10')
     }
 
+    public async getUserSubscriptions(name: string) {
+        const runner = await this.getQueryRunner()
+        return runner.query('SELECT subscriptions.id, subscriptions.level, subscriptions.subscribed_at FROM users ' +
+            `RIGHT JOIN subscriptions on users.id = subscriptions.user_id WHERE NAME = '${name}' ` +
+            'ORDER BY (' +
+            'CASE subscriptions.level ' +
+            'WHEN \'vip\' THEN 0 ' +
+            'WHEN \'follower\' THEN 1 ' +
+            'WHEN \'fan\' THEN 2 ' +
+            'WHEN \'standard\' THEN 3 ' +
+            'END ' +
+            '), subscriptions.subscribed_at DESC ')
+    }
+
     private async getConnection() {
         if (!this._connection) {
             this._connection = await getConnection()

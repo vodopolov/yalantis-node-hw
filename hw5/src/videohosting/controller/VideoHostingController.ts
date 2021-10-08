@@ -33,4 +33,9 @@ export class VideoHostingController {
     getChannelInfo() {
         return this._videoHostingService.getChannelInfo('79f6ce8f-ee0c-4ef5-9c36-da06b7f4cb76')
     }
+
+    @Get('/getUserSubscriptions/')
+    getUserSubscriptions() {
+        return this._videoHostingService.getUserSubscriptions('Ennis Haestier')
+    }
 }
