@@ -15,6 +15,13 @@ export default class VideoHostingRepository {
         return runner.query('SELECT * FROM videos WHERE id in (SELECT video_id FROM likes WHERE likes.positive = true GROUP BY video_id ORDER BY COUNT(*) DESC LIMIT 5)')
     }
 
+    public async getVideosFromUserSubscriptions(name: string) {
+        const runner = await this.getQueryRunner()
+        return runner.query('SELECT id, title, preview_url, duration, published_at FROM videos WHERE channel_id IN ' +
+            '(SELECT channel_id FROM subscriptions WHERE user_id = ' +
+            `(SELECT id FROM users WHERE name = '${name}')) ORDER BY published_at DESC`)
+    }
+
     private async getConnection() {
         if (!this._connection) {
             this._connection = await getConnection()

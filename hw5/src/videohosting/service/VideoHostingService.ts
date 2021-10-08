@@ -12,4 +12,8 @@ export default class VideoHostingService {
     public getMostLikedVideos() {
         return this._repository.getMostLikedVideos()
     }
+
+    public getVideosFromUserSubscriptions(name: string) {
+        return this._repository.getVideosFromUserSubscriptions(name)
+    }
 }

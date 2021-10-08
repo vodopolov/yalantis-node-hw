@@ -18,4 +18,9 @@ export class VideoHostingController {
     getMostLikedVideos() {
         return this._videoHostingService.getMostLikedVideos()
     }
+
+    @Get('/userSubscriptionVideos/')
+    getUserSubscriptionVideos() {
+        return this._videoHostingService.getVideosFromUserSubscriptions('Stephanie Bulger')
+    }
 }
