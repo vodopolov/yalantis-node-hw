@@ -13,4 +13,9 @@ export class VideoHostingController {
     getUsersWithChannel() {
         return this._videoHostingService.getUsersWithChannels()
     }
+
+    @Get('/mostLikedVideos/')
+    getMostLikedVideos() {
+        return this._videoHostingService.getMostLikedVideos()
+    }
 }

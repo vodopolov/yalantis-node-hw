@@ -10,6 +10,11 @@ export default class VideoHostingRepository {
             'FROM channels LEFT JOIN users ON channels.user_id = users.id ORDER BY channels.created_at DESC')
     }
 
+    public async getMostLikedVideos() {
+        const runner = await this.getQueryRunner()
+        return runner.query('SELECT * FROM videos WHERE id in (SELECT video_id FROM likes WHERE likes.positive = true GROUP BY video_id ORDER BY COUNT(*) DESC LIMIT 5)')
+    }
+
     private async getConnection() {
         if (!this._connection) {
             this._connection = await getConnection()

@@ -8,4 +8,8 @@ export default class VideoHostingService {
     public getUsersWithChannels() {
         return this._repository.getUsersWithChannels()
     }
+
+    public getMostLikedVideos() {
+        return this._repository.getMostLikedVideos()
+    }
 }
