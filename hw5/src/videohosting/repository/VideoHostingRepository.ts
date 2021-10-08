@@ -22,6 +22,12 @@ export default class VideoHostingRepository {
             `(SELECT id FROM users WHERE name = '${name}')) ORDER BY published_at DESC`)
     }
 
+    public async getChannelInfo(channelId: string) {
+        const runner = await this.getQueryRunner()
+        return runner.query('SELECT channels.*, (SELECT COUNT(*) FROM subscriptions WHERE subscriptions.channel_id = channels.id) AS subscribers ' +
+            `FROM channels WHERE id = '${channelId}'`)
+    }
+
     private async getConnection() {
         if (!this._connection) {
             this._connection = await getConnection()

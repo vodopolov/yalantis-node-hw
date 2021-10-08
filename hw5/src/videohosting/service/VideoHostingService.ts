@@ -16,4 +16,8 @@ export default class VideoHostingService {
     public getVideosFromUserSubscriptions(name: string) {
         return this._repository.getVideosFromUserSubscriptions(name)
     }
+
+    public getChannelInfo(channelId: string) {
+        return this._repository.getChannelInfo(channelId)
+    }
 }
