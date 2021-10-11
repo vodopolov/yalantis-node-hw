@@ -1,31 +1,58 @@
-import { Connection, getConnection, QueryRunner } from 'typeorm'
+import { Connection, getConnection, getRepository } from 'typeorm'
+import Channel from './model/channel.entity'
+import Like from './model/like.entity'
+import Subscription from './model/subscription.entity'
+import HostingUser from './model/user/User.entity'
+import Video from './model/video.entity'
 
 export default class VideoHostingRepository {
     private _connection: Connection
-    private _queryRunner: QueryRunner
 
     public async getUsersWithChannels() {
-        const runner = await this.getQueryRunner()
-        return runner.query('SELECT channels.user_id, users.name, users.avatar_url, channels.description, channels.photo_url, channels.created_at ' +
-            'FROM channels LEFT JOIN users ON channels.user_id = users.id ORDER BY channels.created_at DESC')
+        const result = await getRepository(Channel).createQueryBuilder('channel')
+            .select(['users.id', 'users.avatarUrl', 'users.name', 'channel.description', 'channel.photoUrl', 'channel.createdAt'])
+            .leftJoin('channel.user', 'users')
+            .orderBy('channel.created_at', 'DESC').getMany()
+        return result
     }
 
     public async getMostLikedVideos() {
-        const runner = await this.getQueryRunner()
-        return runner.query('SELECT * FROM videos WHERE id in (SELECT video_id FROM likes WHERE likes.positive = true GROUP BY video_id ORDER BY COUNT(*) DESC LIMIT 5)')
+        const subQuery = await getRepository(Like).createQueryBuilder('like')
+            .select('like.videoId')
+            .where('like.positive = true')
+            .groupBy('like.videoId')
+            .orderBy('count(*)', 'DESC')
+            .limit(5)
+            .getQuery()
+        const result = await getRepository(Video).createQueryBuilder('video')
+            .where(`video.id in (${subQuery})`)
+        return result.getMany()
     }
 
     public async getVideosFromUserSubscriptions(name: string) {
-        const runner = await this.getQueryRunner()
-        return runner.query('SELECT id, title, preview_url, duration, published_at FROM videos WHERE channel_id IN ' +
-            '(SELECT channel_id FROM subscriptions WHERE user_id = ' +
-            `(SELECT id FROM users WHERE name = '${name}')) ORDER BY published_at DESC`)
+        const user = await getRepository(HostingUser).findOne({ where: { name: name } })
+        if (user) {
+            const subscriptionsSubquery = await getRepository(Subscription).createQueryBuilder('subscription')
+                .select('subscription.channel')
+                .where(`subscription.user = '${user.id}'`)
+                .getQuery()
+
+            const mainQuery = await getRepository(Video).createQueryBuilder('video')
+                .select(['video.id', 'video.title', 'video.previewUrl', 'video.duration', 'video.publishedAt'])
+                .where(`video.channelId in (${subscriptionsSubquery})`)
+                .orderBy('video.publishedAt', 'DESC')
+
+            return mainQuery.getMany()
+        }
+        return []
     }
 
     public async getChannelInfo(channelId: string) {
-        const runner = await this.getQueryRunner()
-        return runner.query('SELECT channels.*, (SELECT COUNT(*) FROM subscriptions WHERE subscriptions.channel_id = channels.id) AS subscribers ' +
-            `FROM channels WHERE id = '${channelId}'`)
+        const result = await getRepository(Channel).createQueryBuilder('channel')
+            .loadRelationCountAndMap('channel.subscriptions', 'channel.subscriptions')
+            .where('channel.id = :id', { id: channelId })
+            .getOne()
+        return result
     }
 
     public async getMostPopularVideos() {
