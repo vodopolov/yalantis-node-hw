@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import LikeEntity from '../like/LikeEntity'
 
 @Entity('videos')
-export default class Video extends BaseEntity {
+export default class VideoEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: string
 
@@ -25,4 +26,7 @@ export default class Video extends BaseEntity {
 
     @Column({ name: 'published_at', type: 'date' })
     publishedAt: Date
+
+    @OneToMany(() => LikeEntity, like => like.video)
+    likes: LikeEntity[]
 }
