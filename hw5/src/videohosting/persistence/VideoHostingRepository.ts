@@ -5,6 +5,7 @@ import SubscriptionEntity from './subscription/SubscriptionEntity'
 import SubscriptionMapper from './subscription/SubscriptionMapper'
 import UserSubscriptionRaw from './subscription/UserSubscriptionRaw'
 import UserEntity from './user/UserEntity'
+import UserMapper from './user/UserMapper'
 import PopularVideoRaw from './video/PopularVideoRaw'
 import VideoEntity from './video/VideoEntity'
 import VideoMapper from './video/VideoMapper'
@@ -15,7 +16,9 @@ export default class VideoHostingRepository {
             .select(['users.id', 'users.avatarUrl', 'users.name', 'channel.description', 'channel.photoUrl', 'channel.createdAt'])
             .leftJoin('channel.user', 'users')
             .orderBy('channel.created_at', 'DESC').getMany()
-        return result
+
+        const mappedResult = result.map(value => UserMapper.toUserWithChannelDto(value))
+        return mappedResult
     }
 
     public async getMostLikedVideos() {
