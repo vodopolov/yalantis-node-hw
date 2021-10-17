@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm'
 import ChannelEntity from './channel/ChannelEntity'
+import ChannelMapper from './channel/ChannelMapper'
 import LikeEntity from './like/LikeEntity'
 import SubscriptionEntity from './subscription/SubscriptionEntity'
 import SubscriptionMapper from './subscription/SubscriptionMapper'
@@ -59,10 +60,11 @@ export default class VideoHostingRepository {
 
     public async getChannelInfo(channelId: string) {
         const result = await getRepository(ChannelEntity).createQueryBuilder('channel')
-            .loadRelationCountAndMap('channel.subscriptions', 'channel.subscriptions')
+            .loadRelationIdAndMap('channel.subscriptions', 'channel.subscriptions')
             .where('channel.id = :id', { id: channelId })
             .getOne()
-        return result
+        const mappedResult = ChannelMapper.toDto(result)
+        return mappedResult
     }
 
     public async getMostPopularVideos() {

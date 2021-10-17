@@ -7,9 +7,8 @@ export default class ChannelEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: string
 
-    @JoinColumn({ name: 'user_id' })
-    @ManyToOne(() => UserEntity)
-    user: UserEntity
+    @Column({ name: 'user_id' })
+    userId: string
 
     @Column({ name: 'description' })
     description: string
@@ -22,4 +21,8 @@ export default class ChannelEntity extends BaseEntity {
 
     @OneToMany(() => SubscriptionEntity, subscription => subscription.channel)
     subscriptions: SubscriptionEntity[]
+
+    @JoinColumn({ name: 'user_id' })
+    @ManyToOne(() => UserEntity)
+    user: UserEntity
 }
