@@ -1,5 +1,6 @@
 import PopularVideoDto from '../../model/video/PopularVideoDto'
 import TopVideoDto from '../../model/video/TopVideoDto'
+import VideoFromUsersSubscriptionDto from '../../model/video/VideoFromUsersSubscriptionDto'
 import PopularVideoRaw from './PopularVideoRaw'
 import VideoEntity from './VideoEntity'
 
@@ -28,6 +29,16 @@ export default class VideoMapper {
             rawResult.video_published_at,
             rawResult.like_counter,
             rawResult.reactions
+        )
+    }
+
+    public static tovideoFromUserSubscriptionDto(video: VideoEntity) {
+        return new VideoFromUsersSubscriptionDto(
+            video.id,
+            video.title,
+            video.previewUrl,
+            video.duration,
+            video.publishedAt
         )
     }
 }

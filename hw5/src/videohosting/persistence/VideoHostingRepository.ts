@@ -46,12 +46,13 @@ export default class VideoHostingRepository {
                 .getMany()
 
             const arrayOfIds = subscriptionsSubqueryResult.map(entity => { return entity.channelId })
-            const mainQuery = await getRepository(VideoEntity).createQueryBuilder('video')
+            const mainQueryResult = await getRepository(VideoEntity).createQueryBuilder('video')
                 .select(['video.id', 'video.title', 'video.previewUrl', 'video.duration', 'video.publishedAt'])
                 .where('video.channelId in (:...array)', { array: arrayOfIds })
                 .orderBy('video.publishedAt', 'DESC').getMany()
 
-            return mainQuery
+            const mappedResult = mainQueryResult.map(value => VideoMapper.tovideoFromUserSubscriptionDto(value))
+            return mappedResult
         }
         return []
     }
