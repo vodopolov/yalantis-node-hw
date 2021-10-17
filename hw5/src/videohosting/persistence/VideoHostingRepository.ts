@@ -31,7 +31,10 @@ export default class VideoHostingRepository {
             .getQuery()
         const result = await getRepository(VideoEntity).createQueryBuilder('video')
             .where(`video.id in (${subQuery})`)
-        return result.getMany()
+            .getMany()
+
+        const mappedResult = result.map(value => VideoMapper.toTopDto(value))
+        return mappedResult
     }
 
     public async getVideosFromUserSubscriptions(name: string) {
@@ -74,7 +77,7 @@ export default class VideoHostingRepository {
             .limit(10)
             .getRawMany()
 
-        const mappedResult = result.map((value: PopularVideoRaw) => VideoMapper.toDto(value))
+        const mappedResult = result.map((value: PopularVideoRaw) => VideoMapper.toPopularDto(value))
         return mappedResult
     }
 

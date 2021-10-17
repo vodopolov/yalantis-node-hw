@@ -1,4 +1,4 @@
-export default class PopularVideoDto {
+export default class TopVideoDto {
     // eslint-disable-next-line no-useless-constructor
     public constructor(
         public readonly id: string,
@@ -8,8 +8,6 @@ export default class PopularVideoDto {
         public readonly previewUrl: string,
         public readonly fileUrl: string,
         public readonly duration: string,
-        public readonly publishedAt: Date,
-        public readonly likes: number,
-        public readonly reactions: number
+        public readonly publishedAt: Date
     ) { }
 }

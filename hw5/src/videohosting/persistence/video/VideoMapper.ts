@@ -1,8 +1,23 @@
 import PopularVideoDto from '../../model/video/PopularVideoDto'
+import TopVideoDto from '../../model/video/TopVideoDto'
 import PopularVideoRaw from './PopularVideoRaw'
+import VideoEntity from './VideoEntity'
 
 export default class VideoMapper {
-    public static toDto(rawResult: PopularVideoRaw): PopularVideoDto {
+    public static toTopDto(video: VideoEntity) {
+        return new TopVideoDto(
+            video.id,
+            video.channelId,
+            video.title,
+            video.description,
+            video.previewUrl,
+            video.fileUrl,
+            video.duration,
+            video.publishedAt
+        )
+    }
+
+    public static toPopularDto(rawResult: PopularVideoRaw): PopularVideoDto {
         return new PopularVideoDto(rawResult.video_id,
             rawResult.video_channel_id,
             rawResult.video_title,
