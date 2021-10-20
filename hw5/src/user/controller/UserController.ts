@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common'
 import { Response } from 'express'
 import { RightsGuard } from '../../auth/RightsGuard'
 import UserCreateDto from '../model/UserCreateDto'
@@ -18,7 +18,7 @@ export class UserController {
         this._userService = userService
     }
 
-    @Post('/create/')
+    @Post()
     create(@Body() user: UserCreateDto) {
         const realUser = new UserProfile(user.name)
         return this._userService.save(realUser)
@@ -29,7 +29,7 @@ export class UserController {
         return this._userService.getAll()
     }
 
-    @Get('/get/:id')
+    @Get('/:id')
     async getById(@Param() params: IdParamHolder, @Res() res: Response) {
         const id = Number.parseInt(params.id)
         const result = await this._userService.get(id)
@@ -39,7 +39,7 @@ export class UserController {
         return res.status(HttpStatus.OK).json({ result: result })
     }
 
-    @Post('/update/')
+    @Put()
     @UseGuards(new RightsGuard())
     async updateUser(@Body() user: UserReplaceDto, @Res() res: Response) {
         console.log(JSON.stringify(user))
