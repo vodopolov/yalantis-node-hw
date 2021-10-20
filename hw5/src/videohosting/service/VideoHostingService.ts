@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import VideoHostingRepository from '../repository/VideoHostingRepository'
+import VideoHostingRepository from '../persistence/VideoHostingRepository'
 
 @Injectable()
 export default class VideoHostingService {

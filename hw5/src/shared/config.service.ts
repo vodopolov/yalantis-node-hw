@@ -1,4 +1,5 @@
 import * as path from 'path'
+import { join } from 'path'
 import { ConnectionOptions } from 'typeorm/connection/ConnectionOptions'
 
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
@@ -38,7 +39,7 @@ class ConfigService {
             username: this.getValue('PG_USER'),
             password: this.getValue('PG_PASSWORD'),
             database: this.getValue('PG_DATABASE'),
-            entities: ['**/*.entity{.ts,.js}'],
+            entities: [join(__dirname, '/../**/**Entity{.ts,.js}')],
             migrationsTableName: 'migration',
             migrations: ['src/migration/*.ts'],
             cli: {
